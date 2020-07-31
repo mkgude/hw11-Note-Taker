@@ -24,10 +24,14 @@ module.exports = function (app) {
       if (err) throw err;
       database = JSON.parse(database);
       var newNote = req.body;
-      // Proposition: We want each new id to be one greater than the last elements id
-      // newNote.id = database.length + 1;
-      const lastElementId = database[database.length - 1].id;
-      newNote.id = lastElementId + 1;
+
+      //If there are no notes, you end up breaking because you can't make a new note id.
+      if (database.length === 0) {
+        newNote.id = 1;
+      } else {
+        const lastElementId = database[database.length - 1].id;
+        newNote.id = lastElementId + 1;
+      }
       database.push(newNote);
       database = JSON.stringify(database);
 
