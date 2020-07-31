@@ -7,18 +7,19 @@ const fs = require("fs");
 // Sets up the Express App
 // =============================================================
 const app = express();
-const PORT = 3000;
-const mainDir = path.join(__dirname, "/public");
+const PORT = process.env.PORT || 8000;
+// const mainDir
 
 // Sets up the Express app to handle data parsing
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//
-
 // Routes
 // =====================================
+// require route file
+require("./routes/htmlroutes.js")(app);
+require("./routes/apiroutes.js")(app);
 
 // Basic route that sends the user first to the AJAX Page
 app.get("/", function (req, res) {
@@ -30,8 +31,8 @@ app.get("/notes", function (req, res) {
   res.sendFile(path.join(mainDir, "notes.html"));
 });
 
-// // on notes page
-// // GET /api/notes
+// on notes page
+// GET /api/notes
 app.get("/api/notes", function (req, res) {
   res.sendFile(path.join(__dirname, "/db/db.json"));
 });
